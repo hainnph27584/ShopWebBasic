@@ -1,0 +1,51 @@
+﻿@model SellerProduct.Models.User
+
+@{
+    ViewData["Title"] = "DangKy";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>DangKy</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="DangKy">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>          
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleID" class="control-label"></label>
+               @* <input  />*@
+                <select>
+                    <option value="2CD03931-07CB-4496-981F-DED58F3571BB" asp-for="RoleID" class="form-control">User</option>
+                    <option value="13AE78D6-77CB-4233-A27D-805A212A74B6" asp-for="RoleID" class="form-control">Admin</option>
+                  @*  <option value="option3">Option 3</option>*@
+                </select> 
+                <span asp-validation-for="RoleID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stauts" class="control-label"></label>
+                <input asp-for="Stauts" class="form-control" />
+                <span asp-validation-for="Stauts" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

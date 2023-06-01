@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SellerProduct.Models.Bill>
+
+@{
+    ViewData["Title"] = "BillOfUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Bill> listBill = ViewBag.ListBill;
+    int i =1;
+
+}
+
+<h1>BillOfUser</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       
+@foreach (var item in listBill) {
+        <tr>
+            <td>
+                @*@Html.RouteLink("HD"+ i++,"BillDetailsOfUser")*@
+                @* @Html.ActionLink("Hd"+ i++, "BillDetailsOfUser", new {  id=item.Id }) |*@
+
+                <a href="@Url.Action("BillDetailsOfUser", "Home", new { idBill = item.Id })">  HD @(i++)  @*View details*@</a>
+
+                @*<a href="@Url.Action("BillDetailsOfUser", "Home", new { id = item.Id })"> <p>HD @(i++) </p> </a>*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                @Html.ActionLink("Details", "BillDetailsOfUser", new {  idBill=item.Id  }) |
+                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+

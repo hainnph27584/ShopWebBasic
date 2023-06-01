@@ -1,0 +1,140 @@
+﻿@using System.Globalization
+@model IEnumerable<SellerProduct.Models.BillDetails>
+
+@{
+    ViewData["Title"] = "BillDetailsOfUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //List<Bill> listbill = ViewBag.Bill;
+    List<BillDetails> billDetails = ViewBag.BillDetails;
+    List<Product> listProduct = ViewBag.Product;
+}
+
+<h1>BillDetailsOfUser</h1>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdSP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdHD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in billDetails) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdSP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdHD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@
+
+
+
+
+
+    <div class="content pb-5 bg-white">
+        <div class="container row m-0 p-0">
+            <h3 class="text-uppercase text-center py-4 col-8" style="text-align: right!important;">Hóa đơn @*@bill.Id*@</h3>
+            <div class="col-2"></div>
+           @* <a href="~/Admin/Product/Create" class="btn btn-product  my-3 py-2" style="float: right !important; width:fit-content; height:fit-content;">Thêm sản phẩm</a>*@
+            <div class="col-2">
+            </div>
+        </div>
+        <table class="table table-hover text-center"
+               style="max-width: 1000px; margin: 0 auto;box-shadow: 0px 0px 30px rgba(187,51,255,1); color: red; table-layout: fixed; vertical-align: middle;">
+            <thead class="fs-6">
+                <tr>
+                    <th scope="col">STT</th>
+                    <th colspan="3">Sản phẩm</th>
+                    <th>Giá tiền</th>
+                    <th>Số Lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var index = 1;
+                }
+                @foreach (BillDetails proBill in billDetails)
+                {
+                    <tr>
+                        <th scope="row">@(index++)</th>
+                        <td colspan="3">
+                            <div class="row p-0 m-0">
+                                <div class="col-6">
+                                @foreach(var imgInProduct in listProduct)
+                                {
+                                    if (proBill.IdSP == imgInProduct.Id)
+                                    {
+                                        <img class="p-2" src="~/images/items/@imgInProduct.Image" alt="product"
+                                         style="object-fit: cover; max-width: 100%;height: auto;">
+                                    }
+
+                              }
+                                </div>
+                                <div class="col-6 py-4">
+                                    <p class="text-start" style="text-overflow: ellipsis;">@(listProduct.FirstOrDefault(c => c.Id == proBill.IdSP).Name)</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@(string.Format(new CultureInfo("vi-VN"), "{0:C0}", proBill.Price))</td>
+                        <td>@(proBill.Quantity)</td>
+                        <td class="text-break"><b>@(string.Format(new CultureInfo("vi-VN"), "{0:C0}", (proBill.Price * proBill.Quantity)))</b></td>
+                    </tr>
+                }
+
+                <tr>
+                    <th class="text-uppercase fs-5" colspan="6">
+                        Tổng thành tiền (@billDetails.Count())
+                    </th>
+                    @{
+                        // Thành tiền của từng SP (PricePerProduct) = Giá SP * số lượng trong giỏ hàng
+                        // Tổng thành tiền = PricePerProduct1 + PricePerProduct2 + PricePerProduct3
+
+                        // B1: Tìm giá của từng sản phẩm
+                        // B2: Nhân giá cho số lượng trong giỏ hàng -> PricePerProduct
+                        // B3: Cộng tất cả PricePerProduct tìm được
+                    }
+                    <td class="fs-6"><b>@billDetails.Sum(c => c.Quantity * c.Price)</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+}

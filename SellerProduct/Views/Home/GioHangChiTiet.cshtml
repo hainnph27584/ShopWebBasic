@@ -1,0 +1,141 @@
+﻿@model IEnumerable<SellerProduct.Models.CartDetails>
+
+@{
+    ViewData["Title"] = "GioHangChiTiet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+       List<string> imageExtensions = new List<string>()
+    {
+        ".jpg", ".png", ".webp", ".gif", ".pdf", ".tiff", ".jpeg"
+    };
+    List<CartDetails> listCartDetails = ViewBag.listCartDetails;
+    List<Product> listProduct = ViewBag.listProduct;
+}
+
+<h1>GioHangChiTiet</h1>
+@*
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdSp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in listCartDetails) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdSp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+*@
+
+
+<div class="content pb-5 bg-white">
+    <h3 class="text-uppercase text-center py-4">Giỏ hàng của bạn</h3>
+
+    <table class="table table-hover text-center"
+           style="max-width: 1000px; margin: 0 auto;box-shadow: 0px 0px 30px rgba(187,51,255,1); color: unset; table-layout: fixed; vertical-align: middle;">
+        <thead class="fs-6">
+            <tr>
+                <th>STT</th>
+                <th colspan="3">Sản phẩm</th>
+                <th>Giá tiền</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var index = 1;
+            }
+            @foreach (var productInCart in listCartDetails)
+            {
+                <tr>
+                    <th>@(index ++)</th>
+                    <td colspan="3">
+                        <div class="row p-0 m-0">
+                            <div class="col-6">
+                               @* <img class="p-2"
+                                     src="@listProduct.FirstOrDefault(c=>c.Id == productInCart.IdSp).Image"
+                                     alt="product" style="object-fit: cover; max-width: 100%;height: auto;"> *@
+                                     
+                                     @foreach(var imgInProduct in listProduct)
+                                {
+                                    if (productInCart.IdSp == imgInProduct.Id)
+                                    {
+                                        <img class="p-2" src="~/images/items/@imgInProduct.Image" alt="product"
+                                         style="object-fit: cover; max-width: 100%;height: auto;">
+                                    }
+
+                              }
+
+                            </div>
+                            <div class="col-6 py-4">
+                                <p class="text-start" style="text-overflow: ellipsis;">@listProduct.FirstOrDefault(c=>c.Id == productInCart.IdSp).Name</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>@listProduct.FirstOrDefault(c=>c.Id == productInCart.IdSp).Price</td>
+                    <td>@productInCart.Quantity</td>
+                    <td><b>@(listProduct.FirstOrDefault(c => c.Id == productInCart.IdSp).Price * productInCart.Quantity)</b></td>
+                    <td colspan="2">
+                        <div class="btn btn-product">
+                            @Html.ActionLink("DeletePdInCart",
+                        "DeletePdInCart",  // <-- Controller Name.
+                        "Home",   // <-- ActionMethod
+                        new {idProduct = @productInCart.IdSp, idUser = ViewBag.UserId },
+                        null
+                        )
+                        </div>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th class="text-uppercase fs-5" colspan="6">
+                    Tổng thành tiền (@listCartDetails.Count())
+                </th>
+                <td class="fs-6"><b>@listCartDetails.Sum(c=>c.Quantity*(listProduct.FirstOrDefault(x=>x.Id==c.IdSp).Price))</b></td>
+               @* <td colspan="2"><button type="button" class="btn btn">Mua hàng</button>
+                    <a href="@Url.Action("ThanhToan", "Home")" class="btn btn-primary">Mua hàng</a>
+                </td>*@
+                <td>
+                    <form action="/Home/ThanhToan" method="post">
+                 <button type="submit">Thanh toán</button>
+                    </form></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

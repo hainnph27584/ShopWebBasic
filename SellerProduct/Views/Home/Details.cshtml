@@ -1,0 +1,66 @@
+﻿@model SellerProduct.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+     List<string> imageExtensions = new List<string>()
+    {
+        ".jpg", ".png", ".webp", ".gif", ".pdf", ".tiff", ".jpeg"
+    };
+    List<Product> product = ViewBag.Product;
+}
+
+<h1>Chi Tiết Sản Phẩm</h1>
+
+@ViewData["idUser"]
+
+<div style="margin-top: 30px;">
+    <dl class="row">
+        <div class="col-md-4">
+            @{
+                var extension = System.IO.Path.GetExtension(Model.Image);
+            }
+            @if (imageExtensions.Contains(extension))
+            {
+                <img src="~/images/items/@Model.Image" width="100%">
+            }
+            else
+            {
+                <img src="~/img/default.png" width="100%">
+            }
+        </div>
+        <div class="col-md-8">
+            <h2 style="font-weight: bold; color: darkblue">
+                @Html.DisplayFor(model => model.Name)
+            </h2>
+            <h4 style="font-weight: bold; color: red">
+                @Html.DisplayFor(model => model.Price) VNĐ
+            </h4>
+            <h5>
+                Mô tả:
+            </h5>
+            <p>
+                @Html.DisplayFor(model => model.Description)
+            </p>
+
+            <div style="margin-top: 50px">
+                <p>Số Lượng: @Model.AvailableQuantity</p>
+            </div>
+             
+            <div style="margin-top: 50px;">
+                @Html.ActionLink("Edit", "Edit", new {  id = Model.Id }) |    
+                  @Html.ActionLink("Thêm vào giỏ hàng",
+                                "ThemVaoGioHang",  // <-- Controller Name.
+                                "Home",   // <-- ActionMethod
+                                new {idProduct = @Model.Id, idUser = ViewBag.IdUser },
+                                null
+                                )            
+    <a asp-action="Index">Back to List</a>
+
+            </div>
+        </div>
+    </dl>
+</div>
+
+
+
